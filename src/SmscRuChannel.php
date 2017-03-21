@@ -25,16 +25,20 @@ class SmscRuChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        $to = $notifiable->routeNotificationFor('smscru');
-
-        if (empty($to)) {
-            throw CouldNotSendNotification::missingRecipient();
+        if (! $notifiable->routeNotificationFor('smscru')) {
+            return;
         }
 
         $message = $notification->toSmscRu($notifiable);
 
         if (is_string($message)) {
             $message = new SmscRuMessage($message);
+        }
+
+        $to = empty($message->to) ? $notifiable->routeNotificationFor('smscru') : $message->to;
+
+        if (empty($to)) {
+            throw CouldNotSendNotification::missingRecipient();
         }
 
         $this->sendMessage($to, $message);

@@ -12,6 +12,13 @@ class SmscRuMessage
     public $from = '';
 
     /**
+     * The recipient information for the message.
+     *
+     * @var array
+     */
+    public $to = [];
+
+    /**
      * The message content.
      *
      * @var string
@@ -62,6 +69,19 @@ class SmscRuMessage
     public function from($from)
     {
         $this->from = $from;
+
+        return $this;
+    }
+
+    /**
+     * Set the recipient address for the message.
+     *
+     * @param  string|array  $to
+     * @return $this
+     */
+    public function to($to)
+    {
+        $this->to = $to;
 
         return $this;
     }
